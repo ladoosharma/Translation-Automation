@@ -29,7 +29,7 @@ xmlDoc.appendChildToDOM(child, price)
 xml_str = xmlDoc._root.toprettyxml(indent ="\t") 
 print(xml_str)
 """
-trans = TranslationXMLGeneratorCntrlr('C:/Users/c8916062/Downloads/Case_Task_translation.txt')
+trans = TranslationXMLGeneratorCntrlr('D:/Python Projects/Translation-Automation/Python Codes/Translation JSON.txt')
 if trans.readFile():
     trans.readDataAndInstantiateObject(trans._content)
     fieldTrans = FieldTranslationController(trans._objectInfoMap, trans._objectPicklistMap)

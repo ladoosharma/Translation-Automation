@@ -4,20 +4,20 @@ class FieldTranslationController:
     def __init__(self, fieldLabelMap, customPicklistMap) -> None:
         self._fieldLabelMap = fieldLabelMap
         self._customPickMap = customPicklistMap
-        self._xmlFieldList =[]
+        self._xmlFieldDOMMap = dict()
 
     def generateXML(self):
         for [eachFld, value] in self._fieldLabelMap.items():
             XMLFieldDom = XMLDomController('CustomFieldTranslation')
-            XMLFieldDom = self.createLabelTranslationTag(XMLFieldDom, value['French label'])
+            XMLFieldDom = self.createLabelTranslationTag(XMLFieldDom, value['French Label'])
             #XMLFieldDom = self.createHelpTextTranslationTag(XMLFieldDom, value['French Help'])
             XMLFieldDom = self.createPicklistTranslationTag(XMLFieldDom, eachFld)
             XMLFieldDom = self.createGenderTranslationTag(XMLFieldDom, 'Masculine')
             XMLFieldDom = self.createNameTag(XMLFieldDom, eachFld.split('.')[1])
             print(XMLFieldDom._root.toprettyxml(indent ="\t") )
-            self._xmlFieldList.append(XMLFieldDom)
+            self._xmlFieldDOMMap[eachFld] = XMLFieldDom
 
-        return self._xmlFieldList
+        return self._xmlFieldDOMMap
 
     def createPicklistTranslationTag(self, xmlDomObject:XMLDomController, fieldApiName:str):
         if fieldApiName in self._customPickMap:

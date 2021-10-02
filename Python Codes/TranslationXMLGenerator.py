@@ -34,6 +34,9 @@ class TranslationXMLGeneratorCntrlr:
                             self._standValueSetMap[eachFld['Field Name']] = content['S.'+objName+'-'+eachFld['Field Name']]
                         elif 'V.'+objName +'-'+ eachFld['Field Name'] in content:
                             pass
+            elif str(key).startswith('S.'):
+                gFldName = key.split('-')[1]
+                self._standValueSetMap[gFldName] = val
 
     def readFile(self):
         try:

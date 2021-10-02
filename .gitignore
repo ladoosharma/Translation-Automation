@@ -1,3 +1,4 @@
-
-**/Case.json
-**/Task.json
+**/typings
+**/__pycache__
+.vscode
+**/Translation**

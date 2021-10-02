@@ -12,7 +12,6 @@ class StandardValueSetTranslation:
             XMLValusetDom = self.createPicklistTranslationTag(XMLValusetDom, eachFld, value)
             print(XMLValusetDom._root.toprettyxml(indent ="\t") )
             self._xmlFieldDOMMap[eachFld] = XMLValusetDom
-
         return self._xmlFieldDOMMap
         
     def generateXMLAndAppendToFolder(self):
@@ -27,3 +26,4 @@ class StandardValueSetTranslation:
             xmlDoc.appendChildToDOM(valueTranslation, translation)
             xmlDoc.appendChildToDOM(xmlDoc._xmlDomParent, valueTranslation)
         return xmlDoc
+    

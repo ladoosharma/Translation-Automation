@@ -36,4 +36,6 @@ if trans.readFile():
     standSetTrans = StandardValueSetTranslation(trans._standValueSetMap)
     standSetTrans.generateXML()
     fieldTrans.generateXML()
+    #trans.createFileInFolder(standSetTrans._xmlFieldDOMMap, dict())#fieldTrans._xmlFieldDOMMap)
+    trans.createPackageXML()
 

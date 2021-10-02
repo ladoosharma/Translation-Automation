@@ -1,15 +1,12 @@
 import json
 from os import error
+from XMLDomCreator import XMLDomController
+
 class TranslationXMLGeneratorCntrlr:
     #this will be changed
-    _standValuSetTransPath = 'C:/Usersc8916062OneDrive - Lowe\'s Companies Inc/Documents/TranslationAutomation/Translation_SFDC/force-app/main/default/standardValueSetTranslations'
+    _standValuSetTransPath = 'D:/Python Projects/Translation-Automation/force-app/main/default/standardValueSetTranslations'
     # this will be changed
-    _objectTranslAtionPath = 'C:/Users/c8916062/OneDrive - Lowe\'s Companies Inc/Documents/TranslationAutomation/Translation_SFDC/force-app/main/default/objectTranslations/Account-fr'
-
-    """_objectInfoMap = dict()
-    _objectPicklistMap = dict()
-    _standValueSetMap = dict()
-    _validationMap = dict()"""
+    _objectTranslationPath = 'D:/Python Projects/Translation-Automation/force-app/main/default/objectTranslations'
 
     def __init__(self, filePath) -> None:
         self._filePath = filePath
@@ -48,7 +45,37 @@ class TranslationXMLGeneratorCntrlr:
         except:
             print(error)
             return False
-        
+    
+    def createFileInFolder(self, valusetDocMap:dict, fieldTransDocMap: dict):
+        for [fileName , fileContent] in fieldTransDocMap.items():
+            objName = str(fileName.split('.')[0]).strip()
+            fldName = str(fileName.split('.')[1]).strip()
+            
+            with open(self._objectTranslationPath+'/'+objName+'-fr/'+fldName+'.fieldTranslation-meta.xml', "w", encoding="utf-8") as f:
+                f.write(fileContent._root.toprettyxml(indent ="\t")) 
+
+        for [fileName , fileContent] in valusetDocMap.items():
+            with open(self._standValuSetTransPath+'/'+fileName+'-fr'+'.standardValueSetTranslation-meta.xml', "w", encoding="utf-8") as f:
+                f.write(fileContent._root.toprettyxml(indent ="\t")) 
+
+    def createPackageXML(self):
+        package = XMLDomController('Package')
+        stdTranslationMember = package.createDomElement('types', None, None, None)
+        nameStdTranTag = package.createDomElement('name',None, None, 'StandardValueSetTranslation')
+        package.appendChildToDOM(stdTranslationMember, nameStdTranTag)
+        fieldMember = package.createDomElement('types', None, None, None)
+        nameFieldTag = package.createDomElement('name',None, None, 'CustomField')
+        package.appendChildToDOM(fieldMember, nameFieldTag)
+        package.appendChildToDOM(package._xmlDomParent, stdTranslationMember)
+        package.appendChildToDOM(package._xmlDomParent, fieldMember)
+        for [fieldApiName, val] in self._objectInfoMap.items():
+            memberFld = package.createDomElement('members',None, None, fieldApiName)
+            package.appendChildToDOM(fieldMember, memberFld)
+
+        print(package._root.toprettyxml())    
+
+
+   
 
 
     

@@ -29,18 +29,4 @@ class XMLDomController:
         rootElement.appendChild(childElement)
         return rootElement
 
-""" def readExistingFile(self, pathToFile):
-        self._existingParsedDoc = eTree.parse(pathToFile)
-        print(self._existingParsedDoc.getroot())
-    
-    def editExistingFile(self, **kwargs):
-        for [key, value] in kwargs.items():
-
-            if self._existingParsedDoc != None:
-                root = self._existingParsedDoc.getroot()
-                for [fldApiName , fldValue] in value.items():
-                    memberTag = root.findall('members')
-                    print(memberTag)
-
-"""
 

@@ -3,6 +3,7 @@ from xml.dom import NAMESPACE_ERR, minidom
 from TranslationXMLGenerator import TranslationXMLGeneratorCntrlr
 from FieldTranslationController import FieldTranslationController
 from StandardValueSetTranslation import StandardValueSetTranslation
+from ObjectTranslation import ObjectTranslationController
 import os 
   
   
@@ -34,8 +35,10 @@ if trans.readFile():
     trans.readDataAndInstantiateObject(trans._content)
     fieldTrans = FieldTranslationController(trans._objectInfoMap, trans._objectPicklistMap)
     standSetTrans = StandardValueSetTranslation(trans._standValueSetMap)
+    objTran = ObjectTranslationController(trans._validationMap)
+    objTran.createObjectXML()
     standSetTrans.generateXML()
     fieldTrans.generateXML()
-    #trans.createFileInFolder(standSetTrans._xmlFieldDOMMap, dict())#fieldTrans._xmlFieldDOMMap)
+    trans.createFileInFolder(standSetTrans._xmlFieldDOMMap, fieldTrans._xmlFieldDOMMap, objTran._XMLObjDocMap)
     trans.createPackageXML()
 

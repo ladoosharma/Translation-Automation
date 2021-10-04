@@ -3,6 +3,7 @@ from xml.dom import NAMESPACE_ERR, minidom
 from TranslationXMLGenerator import TranslationXMLGeneratorCntrlr
 from FieldTranslationController import FieldTranslationController
 from StandardValueSetTranslation import StandardValueSetTranslation
+from ObjectTranslation import ObjectTranslationController
 import os 
   
   
@@ -29,11 +30,15 @@ xmlDoc.appendChildToDOM(child, price)
 xml_str = xmlDoc._root.toprettyxml(indent ="\t") 
 print(xml_str)
 """
-trans = TranslationXMLGeneratorCntrlr('C:/Users/c8916062/Downloads/Case_Task_translation.txt')
+trans = TranslationXMLGeneratorCntrlr('D:/Python Projects/Translation-Automation/Python Codes/Translation JSON.txt')
 if trans.readFile():
     trans.readDataAndInstantiateObject(trans._content)
     fieldTrans = FieldTranslationController(trans._objectInfoMap, trans._objectPicklistMap)
     standSetTrans = StandardValueSetTranslation(trans._standValueSetMap)
+    objTran = ObjectTranslationController(trans._validationMap)
+    objTran.createObjectXML()
     standSetTrans.generateXML()
     fieldTrans.generateXML()
+    trans.createFileInFolder(standSetTrans._xmlFieldDOMMap, fieldTrans._xmlFieldDOMMap, objTran._XMLObjDocMap)
+    trans.createPackageXML()
 

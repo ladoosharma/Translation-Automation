@@ -1,3 +1,9 @@
-
-**/Case.json
-**/Task.json
+**/typings
+**/__pycache__
+.vscode
+**/Translation**
+force-app/main/default/objectTranslations
+force-app/main/default/standardValueSetTranslations
+**/objects/**
+**/objectTranslations/**
+**/standardValueSetTranslations/**

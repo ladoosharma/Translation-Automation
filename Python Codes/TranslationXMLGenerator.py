@@ -5,9 +5,9 @@ from XMLDomCreator import XMLDomController
 
 class TranslationXMLGeneratorCntrlr:
     #this will be changed
-    _standValuSetTransPath = 'D:/Python Projects/Translation-Automation/force-app/main/default/standardValueSetTranslations'
+    _standValuSetTransPath = 'C:/Users/c8916062/OneDrive - Lowe\'s Companies Inc/Documents/TranslationAutomation/Translation_SFDC/force-app/main/default/standardValueSetTranslations'
     # this will be changed
-    _objectTranslationPath = 'D:/Python Projects/Translation-Automation/force-app/main/default/objectTranslations'
+    _objectTranslationPath = 'C:/Users/c8916062/OneDrive - Lowe\'s Companies Inc/Documents/TranslationAutomation/Translation_SFDC/force-app/main/default/objectTranslations'
 
     def __init__(self, filePath) -> None:
         self._filePath = filePath
@@ -48,23 +48,23 @@ class TranslationXMLGeneratorCntrlr:
                 print(self._objectInfoMap)
                 return True
         except:
-            print(error)
+            raise error
             return False
     
     def createFileInFolder(self, valusetDocMap:dict, fieldTransDocMap: dict, objTranslationDocMap: dict):
-        for [fileName , fileContent] in fieldTransDocMap.items():
+        '''for [fileName , fileContent] in fieldTransDocMap.items():
             objName = str(fileName.split('.')[0]).strip()
             fldName = str(fileName.split('.')[1]).strip()
             
-            with open(self._objectTranslationPath+'/'+objName+'-fr/'+fldName+'.fieldTranslation-meta.xml', "w", encoding="utf-8") as f:
-                f.write(fileContent._root.toprettyxml(indent ="\t")) 
-
+            with open(self._objectTranslationPath+'/'+objName+'-fr/'+fldName+'.fieldTranslation-meta.xml', "wb") as f:
+                f.write(fileContent._root.toprettyxml(indent ="\t", encoding="utf-8")) 
+        '''
         for [fileName , fileContent] in valusetDocMap.items():
-            with open(self._standValuSetTransPath+'/'+fileName+'-fr'+'.standardValueSetTranslation-meta.xml', "w", encoding="utf-8") as f:
-                f.write(fileContent._root.toprettyxml(indent ="\t")) 
+            with open(self._standValuSetTransPath+'/'+fileName+'-fr'+'.standardValueSetTranslation-meta.xml', "wb") as f:
+                f.write(fileContent._root.toprettyxml(indent ="\t", encoding="utf-8")) 
         for [fileName , fileContent] in objTranslationDocMap.items():
-            with open(self._objectTranslationPath+'/'+fileName+'-fr'+'/'+fileName+'-fr'+'.objectTranslation-meta.xml', "w", encoding="utf-8") as f:
-                f.write(fileContent._root.toprettyxml(indent ="\t")) 
+            with open(self._objectTranslationPath+'/'+fileName+'-fr'+'/'+fileName+'-fr'+'.objectTranslation-meta.xml', "wb") as f:
+                f.write(fileContent._root.toprettyxml(indent ="\t", encoding="utf-8")) 
 
     def createPackageXML(self):
         package = XMLDomController('Package')
@@ -84,8 +84,8 @@ class TranslationXMLGeneratorCntrlr:
         
         package.appendChildToDOM(fieldMember, nameFieldTag)
         package.appendChildToDOM(stdTranslationMember, nameStdTranTag)
-        with open('D:/Python Projects/Translation-Automation/manifest/package.xml', "w", encoding="utf-8") as f:
-                f.write(package._root.toprettyxml(indent ="\t"))    
+        with open('C:/Users/c8916062/OneDrive - Lowe\'s Companies Inc\Documents/TranslationAutomation/Translation_SFDC/manifest/package.xml', "wb") as f:
+                f.write(package._root.toprettyxml(indent ="\t", encoding="utf-8"))    
 
 
    

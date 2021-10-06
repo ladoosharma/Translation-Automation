@@ -4,12 +4,17 @@ from typing import List
 from XMLDomCreator import XMLDomController
 
 class TranslationXMLGeneratorCntrlr:
-    #this will be changed
-    _standValuSetTransPath = 'C:/Users/c8916062/OneDrive - Lowe\'s Companies Inc/Documents/TranslationAutomation/Translation_SFDC/force-app/main/default/standardValueSetTranslations'
-    # this will be changed
-    _objectTranslationPath = 'C:/Users/c8916062/OneDrive - Lowe\'s Companies Inc/Documents/TranslationAutomation/Translation_SFDC/force-app/main/default/objectTranslations'
+    # path of the standard value set folder 
+    _standValuSetTransPath = ''
+    # path of the objectTranslation folder 
+    _objectTranslationPath = ''
 
-    def __init__(self, filePath) -> None:
+    def __init__(self, filePath:str) -> None:
+        """Constructo of the class
+
+        Args:
+            filePath (str): path of JSON file which is extracted from the .xlsx file
+        """
         self._filePath = filePath
         self._objectInfoMap = dict()
         self._objectPicklistMap = dict()
@@ -17,7 +22,12 @@ class TranslationXMLGeneratorCntrlr:
         self._validationMap = dict()
         self._content = None
 
-    def readDataAndInstantiateObject(self, content):
+    def readDataAndInstantiateObject(self, content:dict):
+        """This method will read the file and create the map of object, field and picklist data
+
+        Args:
+            content (dict): map of excel tabs and its data 
+        """
         for [key, val] in content.items():
            
             if str(key).startswith('O.'):
@@ -41,6 +51,14 @@ class TranslationXMLGeneratorCntrlr:
                 self._standValueSetMap[gFldName] = val
 
     def readFile(self):
+        """This method reads the JSON file 
+
+        Raises:
+            error: [description]
+
+        Returns:
+            Boolean : return true if file is processed successfully
+        """
         try:
             with open(self._filePath, 'rb') as fin:
                 self._content = json.load(fin)
@@ -52,6 +70,13 @@ class TranslationXMLGeneratorCntrlr:
             return False
     
     def createFileInFolder(self, valusetDocMap:dict, fieldTransDocMap: dict, objTranslationDocMap: dict):
+        """[summary]
+
+        Args:
+            valusetDocMap (dict): picklist map of value set
+            fieldTransDocMap (dict): field information map
+            objTranslationDocMap (dict): object inormation map
+        """
         '''for [fileName , fileContent] in fieldTransDocMap.items():
             objName = str(fileName.split('.')[0]).strip()
             fldName = str(fileName.split('.')[1]).strip()
@@ -66,7 +91,12 @@ class TranslationXMLGeneratorCntrlr:
             with open(self._objectTranslationPath+'/'+fileName+'-fr'+'/'+fileName+'-fr'+'.objectTranslation-meta.xml', "wb") as f:
                 f.write(fileContent._root.toprettyxml(indent ="\t", encoding="utf-8")) 
 
-    def createPackageXML(self):
+    def createPackageXML(self, fileLocation:str):
+        """this method will create package xml files based on the XML generated from the respective classes
+
+        Args:
+            fileLocation (str): location of manifest folder where package needs to be created
+        """
         package = XMLDomController('Package')
         stdTranslationMember = package.createDomElement('types', None, None, None)
         nameStdTranTag = package.createDomElement('name',None, None, 'StandardValueSetTranslation')
@@ -84,7 +114,7 @@ class TranslationXMLGeneratorCntrlr:
         
         package.appendChildToDOM(fieldMember, nameFieldTag)
         package.appendChildToDOM(stdTranslationMember, nameStdTranTag)
-        with open('C:/Users/c8916062/OneDrive - Lowe\'s Companies Inc\Documents/TranslationAutomation/Translation_SFDC/manifest/package.xml', "wb") as f:
+        with open(fileLocation, "wb") as f:
                 f.write(package._root.toprettyxml(indent ="\t", encoding="utf-8"))    
 
 

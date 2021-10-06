@@ -32,6 +32,8 @@ print(xml_str)
 """
 #trans = TranslationXMLGeneratorCntrlr('C:/Users/c8916062/Downloads/Case_Task_translation.txt')
 trans = TranslationXMLGeneratorCntrlr('Python Codes/Case_Task_translation.txt')
+trans._standValuSetTransPath = ''
+trans._objectTranslationPath = ''
 if trans.readFile():
     trans.readDataAndInstantiateObject(trans._content)
     standSetTrans = StandardValueSetTranslation(trans._standValueSetMap)
